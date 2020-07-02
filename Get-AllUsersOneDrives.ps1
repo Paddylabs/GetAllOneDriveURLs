@@ -1,8 +1,8 @@
 <#
   .SYNOPSIS
-  Lists the OneDrive URLs in your O365 Tenant and export to an Excel Spreadsheet.
+  Lists the OneDrive URLs in your O365 Tenant and export to a csv file.
   .DESCRIPTION
-  Lists the OneDrive URLs in your O365 Tenant and export to a nice formatted Excel Spreadsheet.
+  Lists the OneDrive URLs in your O365 Tenant and export to a csv file.
   .PARAMETER
   -AdminUrl The SPO Admin URL of your tenant.
   .EXAMPLE
@@ -10,36 +10,26 @@
   .INPUTS
   None
   .OUTPUTS
-  AllOneDrives.xlsx
+  AllOneDrives.csv
   .NOTES
   Author:        Patrick Horne
   Creation Date: 02/07/20
-  Requires:      ImportExcel and SharePoint Online Modules
+  Requires:      SharePoint Online Modules
   Change Log:
   V1.0:         Initial Development
+  V1.1:         Removed Exporting to Excel
 #>
 
-#Requires -Modules ImportExcel, Microsoft.Online.SharePoint.PowerShell
+#Requires -Modules Microsoft.Online.SharePoint.PowerShell
 
 param (
     [Parameter(Mandatory)]
     [String]$TenantUrl
 )
 
-# $TenantUrl = Read-Host "Enter the SharePoint admin center URL"
-# $LogFile = [Environment]::GetFolderPath("Desktop") + "\OneDriveSites.log"
+$filepath = "AllOneDriveUrls.csv"
+
 Connect-SPOService -Url $TenantUrl
-$OneDriveUrls = Get-SPOSite -IncludePersonalSite $true -Limit all -Filter "Url -like '-my.sharepoint.com/personal/'" | Select-Object -ExpandProperty Url
+Get-SPOSite -IncludePersonalSite $true -Limit all -Filter "Url -like '-my.sharepoint.com/personal/'" | Select-Object -ExpandProperty Url | Out-File $filepath 
 
-$ExportExcelSplat = @{
-    Path            = "OneDriveUrls.xlsx"
-    AutoSize        = $true
-    WorkSheetname   = "OneDriveUrls"
-    TableName       = "OneDriveUrls"
-    TableStyle      = "Medium6"
-
-}
-
-$OneDriveUrls | Export-Excel @exportExcelSplat
-
-Write-Host "Complete. File saved as "$ExportExcelSplat.path" "
+Write-Host "Complete. File saved as $filepath "
