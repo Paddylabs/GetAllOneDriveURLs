@@ -32,4 +32,4 @@ $filepath = "AllOneDriveUrls.csv"
 Connect-SPOService -Url $TenantUrl
 Get-SPOSite -IncludePersonalSite $true -Limit all -Filter "Url -like '-my.sharepoint.com/personal/'" | Select-Object -ExpandProperty Url | Out-File $filepath 
 
-Write-Host "Complete. File saved as $filepath "
+Write-Host "Complete. File saved as $filepath"
