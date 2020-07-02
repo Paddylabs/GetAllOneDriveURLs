@@ -16,8 +16,8 @@
   Creation Date: 02/07/20
   Requires:      SharePoint Online Modules
   Change Log:
-  V1.0:         Initial Development
-  V1.1:         Removed Exporting to Excel
+  V1.0:          Initial Development
+  V1.1:          Removed Exporting to Excel
 #>
 
 #Requires -Modules Microsoft.Online.SharePoint.PowerShell
